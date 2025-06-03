@@ -1,106 +1,151 @@
 import { useState } from 'react';
+import { MdExpandLess, MdExpandMore, MdDeleteOutline } from 'react-icons/md';
+import { FiFolderPlus } from 'react-icons/fi';
+import { AiOutlineFileAdd } from 'react-icons/ai';
 
-function FileExplorer() {
-  const initialFiles = [
-    {
-      id: 1,
-      name: 'vite-project',
-      type: 'folder',
-      isOpen: false,
-      subItems: [
-        {
-          id: 2,
-          name: 'node_modules',
-          type: 'folder',
-          isOpen: false,
-          subItems: [
-            { id: 3, name: 'react', type: 'folder', isOpen: false },
-            { id: 4, name: 'react-dom', type: 'folder', isOpen: false },
-            { id: 5, name: 'typescript', type: 'folder', isOpen: false },
-          ],
-        },
-        {
-          id: 6,
-          name: 'src',
-          type: 'folder',
-          isOpen: false,
-          subItems: [
-            { id: 7, name: 'App.tsx', type: 'file' },
-            { id: 8, name: 'main.tsx', type: 'file' },
-            { id: 9, name: 'index.css', type: 'file' },
-            {
-              id: 10,
-              name: 'components',
-              type: 'folder',
-              isOpen: false,
-              subItems: [
-                { id: 11, name: 'Header.tsx', type: 'file' },
-                { id: 12, name: 'Footer.tsx', type: 'file' },
-              ],
-            },
-          ],
-        },
-        { id: 13, name: 'package.json', type: 'file' },
-        { id: 14, name: 'tsconfig.json', type: 'file' },
-        { id: 15, name: 'README.md', type: 'file' },
-      ],
-    },
-  ];
+const initialData = [
+  {
+    id: 1,
+    name: 'public',
+    isFolder: true,
+    children: [{ id: 2, name: 'index.html', isFolder: false }],
+  },
+  {
+    id: 3,
+    name: 'src',
+    isFolder: true,
+    children: [
+      { id: 4, name: 'App.js', isFolder: false },
+      { id: 5, name: 'index.js', isFolder: false },
+    ],
+  },
+  { id: 6, name: 'package.json', isFolder: false },
+];
 
-  const [files, setFiles] = useState(initialFiles);
+export default function FileExplorer() {
+  const [data, setData] = useState(initialData);
 
-  const toggleFolder = (itemId) => {
-    const updateItems = (items) => {
-      return items.map((item) => {
-        if (item.id === itemId) {
-          return { ...item, isOpen: !item.isOpen };
+  const handleAdd = (parentId, isFolder) => {
+    const name = prompt('Enter Name');
+
+    const newItem = {
+      id: Date.now().toString(),
+      name,
+      isFolder,
+      ...(isFolder ? { children: [] } : {}),
+    };
+
+    const updateTree = (nodes) => {
+      return nodes.map((node) => {
+        if (node.id === parentId && node.isFolder) {
+          return {
+            ...node,
+            children: [...(node.children || []), newItem],
+          };
+        } else if (node.children) {
+          return {
+            ...node,
+            children: updateTree(node.children),
+          };
         }
-        if (item.subItems) {
-          return { ...item, subItems: updateItems(item.subItems) };
-        }
-        return item;
+
+        return node;
       });
     };
 
-    setFiles(updateItems(files));
+    setData(updateTree(data));
   };
 
-  const FileTreeItem = ({ item, depth = 0 }) => {
-    const paddingLeft = `${depth * 20}px`;
+  const handleDelete = (targetId) => {
+    const deleteNode = (nodes) => {
+      return nodes
+        .filter((node) => node.id !== targetId)
+        .map((node) =>
+          node.children
+            ? {
+                ...node,
+                children: deleteNode(node.children),
+              }
+            : node
+        );
+    };
 
-    return (
-      <div style={{ paddingLeft: paddingLeft }}>
-        <div
-          className={`file-item ${item.type === 'folder' ? 'folder' : 'file'}`}
-          onClick={() => item.type === 'folder' && toggleFolder(item.id)}
-        >
-          {item.type === 'folder' && (
-            <span className='folder-icon'>{item.isOpen ? '📂' : '📁'}</span>
-          )}
-          {item.type === 'file' && <span className='file-icon'>📄</span>}
-          <span className='item-name'>{item.name}</span>
-        </div>
-        {item.type === 'folder' && item.isOpen && item.subItems && (
-          <div className='sub-items'>
-            {item.subItems.map((subItem) => (
-              <FileTreeItem key={subItem.id} item={subItem} depth={depth + 1} />
-            ))}
-          </div>
-        )}
-      </div>
-    );
+    setData(deleteNode(data));
   };
 
   return (
-    <div className='app-container'>
-      <h1>File Explorer</h1>
-      <div className='file-explorer'>
-        {files.map((file) => (
-          <FileTreeItem key={file.id} item={file} />
-        ))}
-      </div>
+    <div>
+      <h2>File Explorer</h2>
+      <FileAndFolder data={data} onAdd={handleAdd} onRemove={handleDelete} />
     </div>
   );
 }
 
-export default FileExplorer;
+const FileAndFolder = ({ data, onAdd, onRemove }) => {
+  const [collapsed, setCollapsed] = useState({});
+
+  return (
+    <div
+      style={{
+        fontSize: '14px',
+        fontWeight: 'normal',
+        paddingLeft: '16px',
+      }}
+    >
+      {data.map((node) => (
+        <div key={node.id}>
+          {node.isFolder ? (
+            <div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                }}
+              >
+                {collapsed[node.id] ? (
+                  <MdExpandMore
+                    onClick={() =>
+                      setCollapsed((prev) => ({
+                        ...prev,
+                        [node.id]: !prev[node.id],
+                      }))
+                    }
+                  />
+                ) : (
+                  <MdExpandLess
+                    onClick={() =>
+                      setCollapsed((prev) => ({
+                        ...prev,
+                        [node.id]: !prev[node.id],
+                      }))
+                    }
+                  />
+                )}
+                <span>{node.name}</span>
+                <FiFolderPlus size={15} onClick={() => onAdd(node.id, true)} />
+                <AiOutlineFileAdd
+                  size={15}
+                  onClick={() => onAdd(node.id, false)}
+                />
+                <MdDeleteOutline size={15} onClick={() => onRemove(node.id)} />
+              </div>
+              {!collapsed[node.id] && node?.children && (
+                <FileAndFolder
+                  data={node.children}
+                  onAdd={onAdd}
+                  onRemove={onRemove}
+                />
+              )}
+            </div>
+          ) : (
+            <div>
+              <span>{node.name}</span>
+              <MdDeleteOutline size={15} />
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};

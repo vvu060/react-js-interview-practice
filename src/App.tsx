@@ -10,8 +10,8 @@ import ChipsInput from './components/ChipsInput/ChipsInput.jsx';
 function App() {
   return (
     <div className=''>
-      {/* <FileExplorer />
-      <Pagination />
+      <FileExplorer />
+      {/* <Pagination />
       <AutoCompleteSearch />
       <OTPInput />
       <NestedCheckboxes /> */}

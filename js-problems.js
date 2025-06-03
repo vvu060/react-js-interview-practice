@@ -1156,3 +1156,56 @@ function moveZerosToEnd(arr) {
 }
 
 console.log(moveZerosToEnd([1, 20, 0, 12, 0])); // [1, 20, 12, 0, 0]
+
+// Basic JavaScript Types
+console.log('NaN:', typeof NaN); // number
+console.log('undefined:', typeof undefined); // undefined
+console.log('null:', typeof null); // object (this is a known JavaScript quirk)
+console.log('Array constructor:', typeof Array); // function
+console.log('Object literal:', typeof {}); // object
+console.log('Array literal:', typeof []); // object
+console.log('Boolean true:', typeof true); // boolean
+console.log('Boolean false:', typeof false); // boolean
+console.log('Symbol constructor:', typeof Symbol); // function
+console.log('Empty string:', typeof ''); // string
+
+// Add more types and expressions for interview questions
+console.log('Function expression:', typeof function () {}); // function
+console.log('Class declaration:', typeof class Person {}); // function
+console.log('BigInt constructor:', typeof BigInt(123)); // bigint
+console.log('Date object:', typeof new Date()); // object
+console.log('RegExp object:', typeof new RegExp('\\w+')); // object
+console.log('Map object:', typeof new Map()); // object
+console.log('Set object:', typeof new Set()); // object
+console.log('Promise object:', typeof Promise.resolve()); // object
+console.log('Error object:', typeof new Error()); // object
+
+// Tricky JavaScript values
+console.log('BigInt literal (1n):', typeof 1n); // bigint
+console.log('Symbol instance:', typeof Symbol('desc')); // symbol
+console.log('Array.isArray([]):', Array.isArray([])); // true
+console.log(
+  'Object.prototype.toString.call([]):',
+  Object.prototype.toString.call([])
+); // [object Array]
+console.log(
+  'Object.prototype.toString.call({}):',
+  Object.prototype.toString.call({})
+); // [object Object]
+console.log(
+  'Object.prototype.toString.call(null):',
+  Object.prototype.toString.call(null)
+); // [object Null]
+console.log(
+  'Object.prototype.toString.call(undefined):',
+  Object.prototype.toString.call(undefined)
+); // [object Undefined]
+
+// More interview questions
+console.log('NaN === NaN:', NaN === NaN); // false
+console.log('0 === -0:', 0 === -0); // true
+console.log('Object.is(NaN, NaN):', Object.is(NaN, NaN)); // true
+console.log('Object.is(0, -0):', Object.is(0, -0)); // false
+console.log('[] == ![]:', [] == ![]); // true ([] coerces to empty string, ![] is false, '' == false is true)
+console.log('typeof document:', typeof document); // object in browser, undefined in Node.js
+console.log('typeof window:', typeof window); // object in browser, undefined in Node.js
