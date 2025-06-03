@@ -296,6 +296,37 @@ function isPalindrome(str) {
 const isPalindromeShort = (s) =>
   (s = s.toLowerCase().replace(/[^a-z0-9]/g, '')) === [...s].reverse().join('');
 
+function isPalindromeWithoutReverse(str) {
+  const arr = str.split(''); // ['r','a','c','e','c','a','r']
+  const reverseArr = [];
+
+  // Keep popping from the end of `arr` and push into `reverseArr`
+  while (arr.length) {
+    reverseArr.push(arr.pop());
+  }
+
+  const reverseString = reverseArr.join(''); // "racecar"
+  return reverseString === str;
+}
+
+function isPalindromeTwoPointer(str) {
+  let left = 0;
+  let right = str.length - 1;
+
+  while (left < right) {
+    if (str[left] !== str[right]) {
+      return false;
+    }
+    left++;
+    right--;
+  }
+
+  return true;
+}
+
+console.log(isPalindrome('racecar')); // true
+console.log(isPalindrome('hello')); // false
+
 isPalindrome('racecar'); // true
 isPalindrome('A man, a plan, a canal: Panama'); // true
 isPalindrome('hello');
