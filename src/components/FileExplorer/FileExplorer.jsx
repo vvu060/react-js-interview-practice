@@ -26,12 +26,12 @@ export default function FileExplorer() {
   const [data, setData] = useState(initialData);
 
   const handleAdd = (parentId, isFolder) => {
-    const name = prompt('Enter Name');
+    const name = prompt('Enter File/Folder Name');
 
     const newItem = {
       id: Date.now().toString(),
-      name,
       isFolder,
+      name: name.trim(),
       ...(isFolder ? { children: [] } : {}),
     };
 
@@ -48,7 +48,6 @@ export default function FileExplorer() {
             children: updateTree(node.children),
           };
         }
-
         return node;
       });
     };
@@ -95,7 +94,7 @@ const FileAndFolder = ({ data, onAdd, onRemove }) => {
       {data.map((node) => (
         <div key={node.id}>
           {node.isFolder ? (
-            <div>
+            <>
               <div
                 style={{
                   display: 'flex',
@@ -105,6 +104,8 @@ const FileAndFolder = ({ data, onAdd, onRemove }) => {
               >
                 {collapsed[node.id] ? (
                   <MdExpandMore
+                    size={20}
+                    color='black'
                     onClick={() =>
                       setCollapsed((prev) => ({
                         ...prev,
@@ -114,6 +115,8 @@ const FileAndFolder = ({ data, onAdd, onRemove }) => {
                   />
                 ) : (
                   <MdExpandLess
+                    size={20}
+                    color='black'
                     onClick={() =>
                       setCollapsed((prev) => ({
                         ...prev,
@@ -130,18 +133,18 @@ const FileAndFolder = ({ data, onAdd, onRemove }) => {
                 />
                 <MdDeleteOutline size={15} onClick={() => onRemove(node.id)} />
               </div>
-              {!collapsed[node.id] && node?.children && (
+              {!collapsed[node.id] && node.children && (
                 <FileAndFolder
                   data={node.children}
                   onAdd={onAdd}
                   onRemove={onRemove}
                 />
               )}
-            </div>
+            </>
           ) : (
             <div>
               <span>{node.name}</span>
-              <MdDeleteOutline size={15} />
+              <MdDeleteOutline size={15} onClick={() => onRemove(node.id)} />
             </div>
           )}
         </div>
