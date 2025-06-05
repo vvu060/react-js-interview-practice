@@ -4,7 +4,7 @@ import AutoCompleteSearch from './components/AutoCompleteSearch/AutoCompleteSear
 import OTPInput from './components/OTPInput/OTPInput.jsx';
 import NestedCheckboxes from './components/NestedCheckboxes/NestedCheckboxes.jsx';
 import './App.css';
-// import MultiSelect from './components/MultiSelect/MultiSelect.js';
+import MultiSelect from './components/MultiSelect/MultiSelect.js';
 import ChipsInput from './components/ChipsInput/ChipsInput.jsx';
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
       <AutoCompleteSearch />
       <OTPInput />
       <NestedCheckboxes /> */}
-      {/* <MultiSelect /> */}
+      <MultiSelect />
       <ChipsInput />
     </div>
   );
