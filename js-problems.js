@@ -28,7 +28,7 @@ function chunkArrayReduce(arr, size) {
 // Sort by Age
 
 function sortByAge(arr) {
-  return arr.slice().sort((a, b) => {
+  return arr.sort((a, b) => {
     const ageA = parseInt(a.split(' ')[1], 10);
     const ageB = parseInt(b.split(' ')[1], 10);
     return ageA - ageB;
@@ -470,8 +470,8 @@ Array.prototype.myReduce = function (callback, initialValue) {
 
 const nums = [1, 2, 3, 4];
 
-const sum = nums.myReduce((acc, curr) => acc + curr, 0);
-console.log(sum); // 10
+const sum1 = nums.myReduce((acc, curr) => acc + curr, 0);
+console.log(sum1); // 10
 
 const product = nums.myReduce((acc, curr) => acc * curr);
 console.log(product); // 24
