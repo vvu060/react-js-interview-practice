@@ -403,6 +403,16 @@ curriedSum(1)(2)(3);
 curriedSum(1, 2)(3);
 curriedSum(1)(2, 3);
 
+// Infinite Currying
+function addCurry(a) {
+  return function (b) {
+    if (b) return addCurry(a + b);
+    return a;
+  };
+}
+
+console.log(addCurry(5)(6)(7)());
+
 // Shuffle
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
