@@ -296,6 +296,37 @@ function isPalindrome(str) {
 const isPalindromeShort = (s) =>
   (s = s.toLowerCase().replace(/[^a-z0-9]/g, '')) === [...s].reverse().join('');
 
+function isPalindromeWithoutReverse(str) {
+  const arr = str.split(''); // ['r','a','c','e','c','a','r']
+  const reverseArr = [];
+
+  // Keep popping from the end of `arr` and push into `reverseArr`
+  while (arr.length) {
+    reverseArr.push(arr.pop());
+  }
+
+  const reverseString = reverseArr.join(''); // "racecar"
+  return reverseString === str;
+}
+
+function isPalindromeTwoPointer(str) {
+  let left = 0;
+  let right = str.length - 1;
+
+  while (left < right) {
+    if (str[left] !== str[right]) {
+      return false;
+    }
+    left++;
+    right--;
+  }
+
+  return true;
+}
+
+console.log(isPalindrome('racecar')); // true
+console.log(isPalindrome('hello')); // false
+
 isPalindrome('racecar'); // true
 isPalindrome('A man, a plan, a canal: Panama'); // true
 isPalindrome('hello');
@@ -350,7 +381,7 @@ console.log(init()); // No log → 42
 // Curried Sum
 function curry(fn) {
   return function curried(...args) {
-    if (args.lenght >= fn.length) {
+    if (args.length >= fn.length) {
       return fn(...args);
     } else {
       return function (...nextArgs) {
@@ -1143,6 +1174,66 @@ function reverseStringOptimized(str) {
 
   return result.join('');
 }
+
+function reverseString(str) {
+  // Method 1: Using a stack (your approach with a fix)
+  const letters = [];
+  const result = [];
+
+  // Push all characters onto the stack
+  for (const char of str) {
+    letters.push(char);
+  }
+
+  // Pop characters from the stack to reverse the order
+  while (letters.length > 0) {
+    result.push(letters.pop());
+  }
+
+  return result.join('');
+}
+
+// Method 2: Two-pointer technique (most efficient)
+function reverseStringTwoPointers(str) {
+  const chars = str.split('');
+  let left = 0;
+  let right = chars.length - 1;
+
+  while (left < right) {
+    // Swap characters
+    [chars[left], chars[right]] = [chars[right], chars[left]];
+    left++;
+    right--;
+  }
+
+  return chars.join('');
+}
+
+function reverseStr(str) {
+  const chars = str.split('');
+  let left = 0;
+  let right = chars.length - 1;
+
+  while (left < right) {
+    [chars[left], chars[right]] = [chars[right], chars[left]];
+    left++;
+    right--;
+  }
+
+  return chars.join('');
+}
+
+// Method 3: Using reduce
+function reverseStringReduce(str) {
+  return str.split('').reduce((acc, char) => char + acc, '');
+}
+
+// Test all methods
+const original1 = 'abcde';
+console.log(`Original: ${original1}`);
+console.log(`Method 1: ${reverseString(original1)}`);
+console.log(`Method 2: ${reverseStringTwoPointers(original1)}`);
+console.log(`Method 3: ${reverseStringReduce(original1)}`);
 
 // Example
 console.log(reverseStringOptimized('Ab,c,de!$')); // "ed,c,bA!$"
