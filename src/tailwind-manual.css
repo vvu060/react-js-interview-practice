@@ -1,0 +1,29 @@
+/* Manual implementation of some Tailwind classes */
+.p-5 {
+  padding: 1.25rem;
+}
+
+.m-5 {
+  margin: 1.25rem;
+}
+
+.bg-red-500 {
+  background-color: #ef4444;
+}
+
+.text-white {
+  color: white;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
